@@ -1,0 +1,1024 @@
+cat > /mnt/user-data/outputs/hemalatha_ultra_resume.html << 'HTMLEOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>R.HEMALATHA — Portfolio OS</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #000408;
+  --grid: rgba(0,255,180,0.04);
+  --green: #00ffb3;
+  --green2: #00e5ff;
+  --green3: #39ff14;
+  --amber: #ffb300;
+  --red: #ff3366;
+  --surface: rgba(0,20,15,0.92);
+  --border: rgba(0,255,180,0.2);
+  --text: #c8ffe8;
+  --muted: rgba(200,255,232,0.45);
+  --window-bar: rgba(0,255,180,0.08);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:100%; height:100%; overflow:hidden; }
+
+body {
+  background: var(--bg);
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--text);
+  position: relative;
+  cursor: none;
+}
+
+/* ─── SCANLINES ─── */
+body::before {
+  content:'';
+  position:fixed; inset:0; z-index:9000;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.08) 2px,
+    rgba(0,0,0,0.08) 4px
+  );
+  pointer-events:none;
+}
+
+/* ─── GRID BACKGROUND ─── */
+.grid-bg {
+  position:fixed; inset:0; z-index:0;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: gridPulse 8s ease-in-out infinite;
+}
+@keyframes gridPulse {
+  0%,100% { opacity:1; }
+  50% { opacity:0.5; }
+}
+
+/* ─── CORNER DECORATIONS ─── */
+.corner { position:fixed; z-index:10; width:60px; height:60px; }
+.corner::before, .corner::after { content:''; position:absolute; background:var(--green); }
+.corner::before { width:100%; height:2px; }
+.corner::after { width:2px; height:100%; }
+.corner.tl { top:16px; left:16px; }
+.corner.tr { top:16px; right:16px; transform:scaleX(-1); }
+.corner.bl { bottom:16px; left:16px; transform:scaleY(-1); }
+.corner.br { bottom:16px; right:16px; transform:scale(-1); }
+
+/* ─── CUSTOM CURSOR ─── */
+.cursor-dot {
+  position:fixed; z-index:9999;
+  width:6px; height:6px;
+  background:var(--green3);
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  box-shadow: 0 0 10px var(--green3), 0 0 20px var(--green3);
+  transition: transform 0.05s;
+}
+.cursor-cross {
+  position:fixed; z-index:9998;
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+}
+.cursor-cross::before, .cursor-cross::after {
+  content:''; position:absolute; background:rgba(0,255,180,0.6);
+}
+.cursor-cross::before { width:20px; height:1px; top:0; left:-10px; }
+.cursor-cross::after { width:1px; height:20px; top:-10px; left:0; }
+
+/* ─── STATUS BAR ─── */
+.statusbar {
+  position:fixed; top:0; left:0; right:0; z-index:500;
+  height:32px;
+  background: rgba(0,10,6,0.95);
+  border-bottom: 1px solid var(--border);
+  display:flex; align-items:center;
+  padding: 0 20px;
+  gap: 24px;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+.statusbar .logo {
+  color:var(--green); font-family:'Orbitron',sans-serif;
+  font-weight:900; font-size:0.7rem; margin-right:8px;
+}
+.sb-sep { color:var(--border); }
+.sb-right { margin-left:auto; display:flex; gap:16px; align-items:center; }
+.sb-blink { animation: blinkAnim 1.2s step-end infinite; }
+@keyframes blinkAnim { 50%{opacity:0;} }
+.sb-dot { width:6px; height:6px; border-radius:50%; background:var(--green3);
+  box-shadow:0 0 8px var(--green3); display:inline-block; }
+
+/* ─── DOCK ─── */
+.dock {
+  position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+  z-index:500;
+  display:flex; gap:8px;
+  background: rgba(0,20,12,0.85);
+  border:1px solid var(--border);
+  padding:8px 16px;
+  backdrop-filter:blur(20px);
+}
+.dock-btn {
+  width:48px; height:48px;
+  background: rgba(0,255,180,0.05);
+  border:1px solid var(--border);
+  color:var(--green);
+  font-size:0.6rem;
+  letter-spacing:0.08em;
+  cursor:none;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:4px;
+  transition: all 0.25s;
+  font-family:'Share Tech Mono',monospace;
+  position:relative;
+  overflow:hidden;
+}
+.dock-btn .icon { font-size:1.1rem; line-height:1; }
+.dock-btn:hover {
+  background:rgba(0,255,180,0.15);
+  border-color:var(--green);
+  transform:translateY(-8px);
+  box-shadow:0 0 20px rgba(0,255,180,0.3);
+}
+.dock-btn.active { border-color:var(--green3); color:var(--green3); }
+.dock-btn::after {
+  content:'';
+  position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+  width:4px; height:4px; border-radius:50%;
+  background:transparent;
+}
+.dock-btn.active::after { background:var(--green3); box-shadow:0 0 6px var(--green3); }
+
+/* ─── DESKTOP ─── */
+.desktop {
+  position:fixed; inset:32px 0 80px;
+  z-index:1;
+  overflow:hidden;
+}
+
+/* ─── WINDOW ─── */
+.window {
+  position:absolute;
+  background: rgba(0,12,8,0.96);
+  border:1px solid var(--border);
+  box-shadow: 0 0 60px rgba(0,255,180,0.08), inset 0 0 40px rgba(0,0,0,0.5);
+  display:flex; flex-direction:column;
+  min-width:320px; min-height:200px;
+  transition: box-shadow 0.3s;
+  backdrop-filter: blur(10px);
+}
+.window.focused {
+  border-color: rgba(0,255,180,0.5);
+  box-shadow: 0 0 80px rgba(0,255,180,0.15), 0 20px 60px rgba(0,0,0,0.8);
+  z-index:200 !important;
+}
+.window.hidden { display:none !important; }
+.window.minimized { transform:scale(0.1) !important; opacity:0 !important; pointer-events:none; }
+
+.win-bar {
+  height:36px; padding:0 12px;
+  background: var(--window-bar);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:8px;
+  cursor:move; user-select:none;
+  flex-shrink:0;
+}
+.win-controls { display:flex; gap:6px; }
+.win-btn {
+  width:12px; height:12px; border-radius:50%;
+  cursor:none; transition:all 0.2s;
+  display:flex; align-items:center; justify-content:center;
+  font-size:8px; color:transparent;
+  border:none; outline:none;
+}
+.win-btn:hover { color:rgba(0,0,0,0.8); }
+.win-close { background:#ff3366; box-shadow:0 0 6px #ff3366; }
+.win-min { background:#ffb300; box-shadow:0 0 6px #ffb300; }
+.win-max { background:#00ffb3; box-shadow:0 0 6px #00ffb3; }
+.win-title {
+  flex:1; text-align:center;
+  font-family:'Orbitron',sans-serif;
+  font-size:0.6rem; letter-spacing:0.2em;
+  color:var(--muted); text-transform:uppercase;
+}
+.win-body {
+  flex:1; overflow:auto; padding:0;
+  scrollbar-width:thin;
+  scrollbar-color:var(--border) transparent;
+}
+.win-body::-webkit-scrollbar { width:4px; }
+.win-body::-webkit-scrollbar-track { background:transparent; }
+.win-body::-webkit-scrollbar-thumb { background:var(--border); }
+
+/* ─── HERO WINDOW ─── */
+#win-hero {
+  width:620px; height:420px;
+  top:40px; left:60px; z-index:10;
+}
+.hero-content {
+  padding:36px 40px;
+  height:100%;
+  display:flex; flex-direction:column;
+  justify-content:center;
+  position:relative; overflow:hidden;
+}
+.hero-content::before {
+  content:'';
+  position:absolute; top:-50%; left:-50%;
+  width:200%; height:200%;
+  background: radial-gradient(ellipse at 30% 40%, rgba(0,255,180,0.06) 0%, transparent 60%);
+  animation: heroGlow 6s ease-in-out infinite alternate;
+}
+@keyframes heroGlow {
+  from { transform:translate(0,0); }
+  to { transform:translate(10%,5%); }
+}
+.hero-sys {
+  font-size:0.65rem; color:var(--green); letter-spacing:0.2em; margin-bottom:20px;
+  display:flex; align-items:center; gap:8px;
+}
+.hero-sys::before { content:'▶'; animation:blinkAnim 1s step-end infinite; }
+.hero-name {
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(2rem,5vw,3.6rem);
+  font-weight:900; line-height:1;
+  letter-spacing:-0.01em;
+  color:var(--green);
+  text-shadow: 0 0 40px rgba(0,255,180,0.5), 0 0 80px rgba(0,255,180,0.2);
+  animation: nameFlicker 8s ease-in-out infinite;
+}
+@keyframes nameFlicker {
+  0%,96%,100% { opacity:1; }
+  97% { opacity:0.85; }
+  98% { opacity:1; }
+  99% { opacity:0.7; }
+}
+.hero-role {
+  font-family:'Rajdhani',sans-serif;
+  font-size:1.05rem; font-weight:600;
+  color:var(--green2); letter-spacing:0.3em;
+  text-transform:uppercase; margin-top:10px;
+  margin-bottom:24px;
+}
+.hero-info { display:flex; flex-direction:column; gap:6px; }
+.info-row {
+  font-size:0.72rem; color:var(--muted);
+  display:flex; align-items:center; gap:10px;
+}
+.info-row .lbl { color:var(--green); min-width:70px; }
+.hero-links { margin-top:20px; display:flex; gap:10px; flex-wrap:wrap; }
+.pill {
+  font-size:0.65rem; letter-spacing:0.12em;
+  border:1px solid var(--border);
+  padding:5px 14px;
+  color:var(--green2);
+  cursor:none;
+  transition:all 0.25s;
+  text-decoration:none;
+  display:inline-block;
+}
+.pill:hover {
+  background:rgba(0,229,255,0.1);
+  border-color:var(--green2);
+  box-shadow:0 0 16px rgba(0,229,255,0.2);
+}
+
+/* ─── PROJECTS WINDOW ─── */
+#win-projects {
+  width:560px; height:460px;
+  top:60px; left:720px; z-index:9;
+}
+.proj-list { padding:20px; display:flex; flex-direction:column; gap:2px; }
+.proj-item {
+  padding:16px 18px;
+  border:1px solid transparent;
+  position:relative;
+  transition:all 0.3s; cursor:none;
+  overflow:hidden;
+}
+.proj-item::before {
+  content:'';
+  position:absolute; left:0; top:0; bottom:0;
+  width:2px; background:var(--green);
+  transform:scaleY(0);
+  transition:transform 0.3s;
+}
+.proj-item:hover { background:rgba(0,255,180,0.04); border-color:var(--border); }
+.proj-item:hover::before { transform:scaleY(1); }
+.proj-num {
+  font-size:0.58rem; color:var(--amber); letter-spacing:0.2em; margin-bottom:6px;
+}
+.proj-name {
+  font-family:'Rajdhani',sans-serif;
+  font-size:1rem; font-weight:700; color:var(--text);
+  line-height:1.2; margin-bottom:6px;
+}
+.proj-desc { font-size:0.68rem; color:var(--muted); line-height:1.6; }
+.proj-tags { margin-top:8px; display:flex; gap:6px; flex-wrap:wrap; }
+.ptag {
+  font-size:0.58rem; color:var(--green2);
+  border:1px solid rgba(0,229,255,0.2);
+  padding:2px 8px; letter-spacing:0.08em;
+}
+.ptag.final { color:var(--amber); border-color:rgba(255,179,0,0.3); }
+
+/* ─── SKILLS WINDOW ─── */
+#win-skills {
+  width:420px; height:340px;
+  top:500px; left:60px; z-index:8;
+}
+.skills-content { padding:20px; }
+.skill-row { margin-bottom:18px; }
+.skill-name {
+  font-size:0.68rem; color:var(--muted); letter-spacing:0.1em;
+  margin-bottom:8px; display:flex; justify-content:space-between;
+}
+.skill-name span { color:var(--green); }
+.skill-bar {
+  height:4px; background:rgba(0,255,180,0.08); position:relative;
+  overflow:hidden;
+}
+.skill-bar::after {
+  content:''; position:absolute; top:0; left:0; height:100%;
+  background: linear-gradient(90deg, var(--green), var(--green2));
+  box-shadow:0 0 10px var(--green);
+  width:0%;
+  transition: width 1.5s cubic-bezier(0.23,1,0.32,1);
+}
+.skill-bar.loaded::after { width:var(--w); }
+.skill-tags-grid { display:flex; flex-wrap:wrap; gap:6px; padding:20px; }
+.stag {
+  font-size:0.62rem; letter-spacing:0.1em;
+  border:1px solid var(--border); padding:4px 10px;
+  color:var(--muted); cursor:none; transition:all 0.25s;
+}
+.stag:hover { border-color:var(--green); color:var(--green); background:rgba(0,255,180,0.05); }
+
+/* ─── EDU WINDOW ─── */
+#win-edu {
+  width:400px; height:280px;
+  top:500px; left:700px; z-index:7;
+}
+.edu-content { padding:20px; display:flex; flex-direction:column; gap:0; }
+.edu-entry {
+  display:grid; grid-template-columns:110px 1fr;
+  gap:16px; padding:16px 0;
+  border-bottom:1px solid rgba(0,255,180,0.08);
+}
+.edu-entry:last-child { border:none; }
+.edu-date { font-size:0.62rem; color:var(--amber); line-height:1.6; }
+.edu-deg {
+  font-family:'Rajdhani',sans-serif;
+  font-size:0.92rem; font-weight:700; color:var(--text);
+  margin-bottom:4px;
+}
+.edu-inst { font-size:0.65rem; color:var(--muted); margin-bottom:4px; }
+.edu-score { font-size:0.65rem; color:var(--green3); }
+
+/* ─── ACHIEVEMENTS WINDOW ─── */
+#win-ach {
+  width:420px; height:240px;
+  top:180px; left:1120px; z-index:6;
+}
+.ach-content { padding:20px; display:flex; flex-direction:column; gap:12px; }
+.ach-entry {
+  display:flex; gap:14px; align-items:flex-start;
+  padding:12px 14px; border:1px solid transparent;
+  transition:all 0.25s; cursor:none;
+}
+.ach-entry:hover { border-color:var(--border); background:rgba(0,255,180,0.03); }
+.ach-glyph { color:var(--amber); font-size:1rem; flex-shrink:0; margin-top:2px; }
+.ach-text { font-size:0.67rem; color:var(--muted); line-height:1.65; }
+.ach-text strong { color:var(--text); }
+
+/* ─── TERMINAL WINDOW ─── */
+#win-terminal {
+  width:480px; height:260px;
+  top:460px; left:1120px; z-index:5;
+}
+.terminal-body {
+  padding:16px 20px;
+  height:100%;
+  font-size:0.7rem;
+  line-height:1.8;
+  color:var(--green);
+  overflow:auto;
+}
+.t-line { display:flex; gap:8px; align-items:flex-start; }
+.t-prompt { color:var(--green2); flex-shrink:0; }
+.t-cmd { color:var(--text); }
+.t-out { color:var(--muted); padding-left:16px; }
+.t-cursor-line { display:flex; align-items:center; gap:8px; margin-top:4px; }
+.t-input-cursor { 
+  display:inline-block; width:8px; height:14px;
+  background:var(--green); animation:blinkAnim 1s step-end infinite;
+}
+
+/* ─── BOOT SCREEN ─── */
+#boot {
+  position:fixed; inset:0; z-index:8000;
+  background:#000;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  gap:24px;
+}
+.boot-logo {
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(2rem,6vw,4rem);
+  font-weight:900; color:var(--green);
+  text-shadow:0 0 60px rgba(0,255,180,0.8);
+  letter-spacing:0.1em;
+  animation: logoIn 0.8s ease forwards;
+}
+@keyframes logoIn {
+  from { opacity:0; transform:scale(0.8); }
+  to { opacity:1; transform:scale(1); }
+}
+.boot-sub {
+  font-size:0.75rem; color:var(--muted); letter-spacing:0.3em;
+  text-transform:uppercase;
+}
+.boot-bar-wrap {
+  width:320px; height:2px; background:rgba(0,255,180,0.15);
+  position:relative; overflow:hidden;
+}
+.boot-bar {
+  height:100%; background:var(--green);
+  box-shadow:0 0 12px var(--green);
+  width:0; animation:bootLoad 2.2s ease forwards 0.4s;
+}
+@keyframes bootLoad {
+  0% { width:0; }
+  40% { width:45%; }
+  70% { width:72%; }
+  90% { width:88%; }
+  100% { width:100%; }
+}
+.boot-lines {
+  font-size:0.6rem; color:rgba(0,255,180,0.35);
+  letter-spacing:0.08em; text-align:center;
+  line-height:2;
+}
+
+/* ─── GLITCH TITLE ─── */
+.glitch {
+  position:relative;
+}
+.glitch::before, .glitch::after {
+  content: attr(data-text);
+  position:absolute; top:0; left:0;
+  width:100%; height:100%;
+  font-family:inherit; font-size:inherit;
+  font-weight:inherit; line-height:inherit;
+}
+.glitch::before {
+  color:#ff3366;
+  animation:glitch1 4s infinite;
+  clip-path:polygon(0 0,100% 0,100% 35%,0 35%);
+}
+.glitch::after {
+  color:#00e5ff;
+  animation:glitch2 4s infinite;
+  clip-path:polygon(0 65%,100% 65%,100% 100%,0 100%);
+}
+@keyframes glitch1 {
+  0%,96%,100%{transform:translate(0);opacity:0;}
+  97%{transform:translate(-3px,1px);opacity:1;}
+  98%{transform:translate(3px,-1px);opacity:1;}
+  99%{transform:translate(0);opacity:0;}
+}
+@keyframes glitch2 {
+  0%,94%,100%{transform:translate(0);opacity:0;}
+  95%{transform:translate(3px,2px);opacity:1;}
+  96%{transform:translate(-3px,-2px);opacity:1;}
+  97%{transform:translate(0);opacity:0;}
+}
+
+/* ─── NEON GLOW PULSE ─── */
+@keyframes neonPulse {
+  0%,100%{box-shadow:0 0 20px rgba(0,255,180,0.1);}
+  50%{box-shadow:0 0 40px rgba(0,255,180,0.25), 0 0 80px rgba(0,255,180,0.08);}
+}
+
+/* ─── FLOATING PARTICLES ─── */
+.particle {
+  position:fixed; border-radius:50%;
+  pointer-events:none; z-index:2;
+  animation:floatParticle linear infinite;
+}
+@keyframes floatParticle {
+  0%{transform:translateY(100vh) rotate(0deg);opacity:0;}
+  10%{opacity:1;}
+  90%{opacity:1;}
+  100%{transform:translateY(-100px) rotate(720deg);opacity:0;}
+}
+
+/* ─── WINDOW RESIZE HANDLE ─── */
+.resize-handle {
+  position:absolute; bottom:0; right:0;
+  width:16px; height:16px; cursor:se-resize;
+  color:var(--muted); font-size:8px;
+  display:flex; align-items:center; justify-content:center;
+}
+
+/* scrollbar */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);}
+</style>
+</head>
+<body>
+
+<!-- Custom Cursors -->
+<div class="cursor-dot" id="cdot"></div>
+<div class="cursor-cross" id="ccross"></div>
+
+<!-- Grid -->
+<div class="grid-bg"></div>
+
+<!-- Corner decorations -->
+<div class="corner tl"></div>
+<div class="corner tr"></div>
+<div class="corner bl"></div>
+<div class="corner br"></div>
+
+<!-- Status Bar -->
+<div class="statusbar">
+  <span class="logo">RH∙OS</span>
+  <span class="sb-sep">│</span>
+  <span>PORTFOLIO v2.6.1</span>
+  <span class="sb-sep">│</span>
+  <span><span class="sb-dot"></span> SYSTEM ONLINE</span>
+  <span class="sb-sep">│</span>
+  <span>R.HEMALATHA — SOFTWARE DEVELOPER</span>
+  <div class="sb-right">
+    <span>📍 CHIDAMBARAM</span>
+    <span class="sb-sep">│</span>
+    <span id="sb-time" class="sb-blink">--:--:--</span>
+  </div>
+</div>
+
+<!-- Desktop -->
+<div class="desktop" id="desktop">
+
+  <!-- HERO WINDOW -->
+  <div class="window focused" id="win-hero" data-z="10">
+    <div class="win-bar" id="bar-hero">
+      <div class="win-controls">
+        <button class="win-btn win-close" onclick="closeWin('win-hero')">✕</button>
+        <button class="win-btn win-min" onclick="minWin('win-hero')">─</button>
+        <button class="win-btn win-max" onclick="maxWin('win-hero')">□</button>
+      </div>
+      <div class="win-title">IDENTITY.SYS</div>
+    </div>
+    <div class="win-body">
+      <div class="hero-content">
+        <div class="hero-sys">LOADING IDENTITY MODULE...</div>
+        <h1 class="hero-name glitch" data-text="R.HEMALATHA">R.HEMALATHA</h1>
+        <div class="hero-role">Aspiring Software Developer</div>
+        <div class="hero-info">
+          <div class="info-row"><span class="lbl">PHONE</span> 8838524638</div>
+          <div class="info-row"><span class="lbl">EMAIL</span> rhema9102004@gmail.com</div>
+          <div class="info-row"><span class="lbl">LOC</span> Chidambaram, Tamil Nadu</div>
+          <div class="info-row"><span class="lbl">STATUS</span> <span style="color:var(--green3)">▶ AVAILABLE FOR OPPORTUNITIES</span></div>
+        </div>
+        <div class="hero-links">
+          <a class="pill" href="mailto:rhema9102004@gmail.com">⟶ EMAIL</a>
+          <a class="pill" href="#">⟶ LINKEDIN</a>
+          <a class="pill" href="#">⟶ GITHUB</a>
+          <a class="pill" href="tel:8838524638">⟶ CALL</a>
+        </div>
+      </div>
+    </div>
+    <div class="resize-handle">◢</div>
+  </div>
+
+  <!-- PROJECTS WINDOW -->
+  <div class="window" id="win-projects" data-z="9">
+    <div class="win-bar" id="bar-projects">
+      <div class="win-controls">
+        <button class="win-btn win-close" onclick="closeWin('win-projects')">✕</button>
+        <button class="win-btn win-min" onclick="minWin('win-projects')">─</button>
+        <button class="win-btn win-max" onclick="maxWin('win-projects')">□</button>
+      </div>
+      <div class="win-title">PROJECTS.LOG</div>
+    </div>
+    <div class="win-body">
+      <div class="proj-list">
+        <div class="proj-item">
+          <div class="proj-num">// PROJECT 01</div>
+          <div class="proj-name">Sentiment Analysis for Customer Feedback</div>
+          <div class="proj-desc">NLP-powered system to analyze customer emotions from feedback data, enabling businesses to extract actionable insights at scale.</div>
+          <div class="proj-tags">
+            <span class="ptag">Python</span><span class="ptag">NLP</span><span class="ptag">ML</span>
+          </div>
+        </div>
+        <div class="proj-item">
+          <div class="proj-num">// PROJECT 02</div>
+          <div class="proj-name">Automated Mail Invitation System — UiPath</div>
+          <div class="proj-desc">RPA solution automating bulk email invitations for symposiums and events, reducing manual effort by 90%+.</div>
+          <div class="proj-tags">
+            <span class="ptag">UiPath</span><span class="ptag">RPA</span><span class="ptag">Automation</span>
+          </div>
+        </div>
+        <div class="proj-item">
+          <div class="proj-num">// PROJECT 03</div>
+          <div class="proj-name">Education Organisation Using ServiceNow</div>
+          <div class="proj-desc">Centralized platform to store, organize and manage student data using ServiceNow's ITSM framework.</div>
+          <div class="proj-tags">
+            <span class="ptag">ServiceNow</span><span class="ptag">ITSM</span><span class="ptag">Data Mgmt</span>
+          </div>
+        </div>
+        <div class="proj-item">
+          <div class="proj-num">// FINAL YEAR PROJECT ★</div>
+          <div class="proj-name">Echosign Bidirectional Multilingual Translation</div>
+          <div class="proj-desc">Translation system enabling two-way communication across multiple languages via Echosign — improving accessibility and global reach.</div>
+          <div class="proj-tags">
+            <span class="ptag final">★ CAPSTONE</span><span class="ptag">Echosign</span><span class="ptag">Translation</span><span class="ptag">Accessibility</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="resize-handle">◢</div>
+  </div>
+
+  <!-- SKILLS WINDOW -->
+  <div class="window" id="win-skills" data-z="8">
+    <div class="win-bar" id="bar-skills">
+      <div class="win-controls">
+        <button class="win-btn win-close" onclick="closeWin('win-skills')">✕</button>
+        <button class="win-btn win-min" onclick="minWin('win-skills')">─</button>
+        <button class="win-btn win-max" onclick="maxWin('win-skills')">□</button>
+      </div>
+      <div class="win-title">SKILLS.DAT</div>
+    </div>
+    <div class="win-body">
+      <div class="skills-content">
+        <div class="skill-row">
+          <div class="skill-name">PYTHON <span>88%</span></div>
+          <div class="skill-bar" style="--w:88%"></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-name">JAVA <span>75%</span></div>
+          <div class="skill-bar" style="--w:75%"></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-name">JAVASCRIPT / REACT.JS <span>80%</span></div>
+          <div class="skill-bar" style="--w:80%"></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-name">HTML &amp; CSS <span>90%</span></div>
+          <div class="skill-bar" style="--w:90%"></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-name">SQL <span>72%</span></div>
+          <div class="skill-bar" style="--w:72%"></div>
+        </div>
+      </div>
+      <div class="skill-tags-grid">
+        <span class="stag">Git</span><span class="stag">UiPath</span>
+        <span class="stag">ServiceNow</span><span class="stag">Problem Solving</span>
+        <span class="stag">Debugging</span><span class="stag">Prompt Engineering</span>
+      </div>
+    </div>
+    <div class="resize-handle">◢</div>
+  </div>
+
+  <!-- EDUCATION WINDOW -->
+  <div class="window" id="win-edu" data-z="7">
+    <div class="win-bar" id="bar-edu">
+      <div class="win-controls">
+        <button class="win-btn win-close" onclick="closeWin('win-edu')">✕</button>
+        <button class="win-btn win-min" onclick="minWin('win-edu')">─</button>
+        <button class="win-btn win-max" onclick="maxWin('win-edu')">□</button>
+      </div>
+      <div class="win-title">EDUCATION.TXT</div>
+    </div>
+    <div class="win-body">
+      <div class="edu-content">
+        <div class="edu-entry">
+          <div class="edu-date">SEP 2022<br>MAY 2026</div>
+          <div>
+            <div class="edu-deg">B.E. Computer Science</div>
+            <div class="edu-inst">AVC College of Engineering, Mayiladuthurai</div>
+            <div class="edu-score">CGPA → 8.1 / 10.0</div>
+          </div>
+        </div>
+        <div class="edu-entry">
+          <div class="edu-date">JUN 2021<br>MAR 2022</div>
+          <div>
+            <div class="edu-deg">HSC — Higher Secondary</div>
+            <div class="edu-inst">Govt Girls Hr. Sec School, Chidambaram</div>
+            <div class="edu-score">SCORE → 64%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="resize-handle">◢</div>
+  </div>
+
+  <!-- ACHIEVEMENTS WINDOW -->
+  <div class="window" id="win-ach" data-z="6">
+    <div class="win-bar" id="bar-ach">
+      <div class="win-controls">
+        <button class="win-btn win-close" onclick="closeWin('win-ach')">✕</button>
+        <button class="win-btn win-min" onclick="minWin('win-ach')">─</button>
+        <button class="win-btn win-max" onclick="maxWin('win-ach')">□</button>
+      </div>
+      <div class="win-title">ACHIEVEMENTS.EXE</div>
+    </div>
+    <div class="win-body">
+      <div class="ach-content">
+        <div class="ach-entry">
+          <div class="ach-glyph">◈</div>
+          <div class="ach-text">Earned certifications: <strong>IBM Skill Build</strong>, <strong>Infosys AI Foundation</strong>, <strong>MongoDB</strong> &amp; <strong>TN Skill Edunet Program</strong> — proving relentless commitment to continuous learning.</div>
+        </div>
+        <div class="ach-entry">
+          <div class="ach-glyph">◈</div>
+          <div class="ach-text"><strong>GUVI HCL Training</strong> — Hands-on exposure to Full Stack Development and industry-grade coding practices in a structured program.</div>
+        </div>
+      </div>
+    </div>
+    <div class="resize-handle">◢</div>
+  </div>
+
+  <!-- TERMINAL WINDOW -->
+  <div class="window" id="win-terminal" data-z="5">
+    <div class="win-bar" id="bar-terminal">
+      <div class="win-controls">
+        <button class="win-btn win-close" onclick="closeWin('win-terminal')">✕</button>
+        <button class="win-btn win-min" onclick="minWin('win-terminal')">─</button>
+        <button class="win-btn win-max" onclick="maxWin('win-terminal')">□</button>
+      </div>
+      <div class="win-title">TERMINAL — BASH</div>
+    </div>
+    <div class="win-body">
+      <div class="terminal-body" id="terminal-out"></div>
+    </div>
+    <div class="resize-handle">◢</div>
+  </div>
+
+</div><!-- /desktop -->
+
+<!-- DOCK -->
+<div class="dock">
+  <button class="dock-btn active" id="dock-hero" onclick="toggleWin('win-hero','dock-hero')">
+    <span class="icon">◉</span>ID
+  </button>
+  <button class="dock-btn" id="dock-projects" onclick="toggleWin('win-projects','dock-projects')">
+    <span class="icon">⌬</span>PROJ
+  </button>
+  <button class="dock-btn" id="dock-skills" onclick="toggleWin('win-skills','dock-skills')">
+    <span class="icon">▦</span>SKILLS
+  </button>
+  <button class="dock-btn" id="dock-edu" onclick="toggleWin('win-edu','dock-edu')">
+    <span class="icon">◫</span>EDU
+  </button>
+  <button class="dock-btn" id="dock-ach" onclick="toggleWin('win-ach','dock-ach')">
+    <span class="icon">★</span>ACHV
+  </button>
+  <button class="dock-btn" id="dock-terminal" onclick="toggleWin('win-terminal','dock-terminal')">
+    <span class="icon">⌘</span>TERM
+  </button>
+</div>
+
+<!-- BOOT SCREEN -->
+<div id="boot">
+  <div class="boot-logo">RH∙OS</div>
+  <div class="boot-sub">Portfolio Operating System</div>
+  <div class="boot-bar-wrap"><div class="boot-bar"></div></div>
+  <div class="boot-lines" id="boot-lines"></div>
+</div>
+
+<script>
+/* ── CURSOR ── */
+const cdot = document.getElementById('cdot');
+const ccross = document.getElementById('ccross');
+document.addEventListener('mousemove', e => {
+  cdot.style.left = e.clientX + 'px';
+  cdot.style.top = e.clientY + 'px';
+  ccross.style.left = e.clientX + 'px';
+  ccross.style.top = e.clientY + 'px';
+});
+
+/* ── CLOCK ── */
+function updateClock() {
+  const now = new Date();
+  document.getElementById('sb-time').textContent =
+    now.toLocaleTimeString('en-IN', {hour12:false});
+}
+setInterval(updateClock, 1000); updateClock();
+
+/* ── PARTICLES ── */
+for (let i = 0; i < 18; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = Math.random() * 3 + 1;
+  const colors = ['rgba(0,255,180,0.6)', 'rgba(0,229,255,0.5)', 'rgba(57,255,20,0.4)'];
+  p.style.cssText = `
+    width:${size}px; height:${size}px;
+    background:${colors[Math.floor(Math.random()*3)]};
+    left:${Math.random()*100}%;
+    animation-duration:${Math.random()*20+15}s;
+    animation-delay:${Math.random()*10}s;
+    box-shadow:0 0 6px currentColor;
+  `;
+  document.body.appendChild(p);
+}
+
+/* ── WINDOW MANAGEMENT ── */
+let zTop = 100;
+const windows = document.querySelectorAll('.window');
+windows.forEach(win => {
+  win.addEventListener('mousedown', () => focusWin(win.id));
+});
+
+function focusWin(id) {
+  document.querySelectorAll('.window').forEach(w => w.classList.remove('focused'));
+  const win = document.getElementById(id);
+  if (win) { win.classList.add('focused'); win.style.zIndex = ++zTop; }
+}
+function closeWin(id) {
+  const win = document.getElementById(id);
+  win.classList.add('hidden');
+  const btn = document.querySelector(`[onclick="toggleWin('${id}','dock-${id.replace('win-','')}')")`) ||
+               document.getElementById('dock-' + id.replace('win-',''));
+  if (btn) btn.classList.remove('active');
+}
+function minWin(id) {
+  const win = document.getElementById(id);
+  win.style.transition = 'transform 0.3s, opacity 0.3s';
+  win.style.transform = 'scale(0.05) translateY(400px)';
+  win.style.opacity = '0';
+  win.style.pointerEvents = 'none';
+  setTimeout(() => { win.style.visibility = 'hidden'; }, 300);
+}
+function maxWin(id) {
+  const win = document.getElementById(id);
+  if (win._maximized) {
+    win.style.cssText = win._savedStyle;
+    win._maximized = false;
+  } else {
+    win._savedStyle = win.style.cssText;
+    win.style.transition = 'all 0.35s cubic-bezier(0.23,1,0.32,1)';
+    win.style.top = '0px'; win.style.left = '0px';
+    win.style.width = '100%'; win.style.height = '100%';
+    win._maximized = true;
+  }
+  focusWin(id);
+}
+function toggleWin(id, dockId) {
+  const win = document.getElementById(id);
+  const btn = document.getElementById(dockId);
+  if (win.classList.contains('hidden') || win.style.visibility === 'hidden') {
+    win.classList.remove('hidden');
+    win.style.visibility = 'visible';
+    win.style.opacity = '1';
+    win.style.transform = '';
+    win.style.pointerEvents = '';
+    if (btn) btn.classList.add('active');
+    focusWin(id);
+  } else {
+    closeWin(id);
+    if (btn) btn.classList.remove('active');
+  }
+}
+
+/* ── DRAG ── */
+document.querySelectorAll('.win-bar').forEach(bar => {
+  let dragging = false, ox, oy;
+  const win = bar.closest('.window');
+  bar.addEventListener('mousedown', e => {
+    if (e.target.classList.contains('win-btn')) return;
+    dragging = true;
+    const rect = win.getBoundingClientRect();
+    ox = e.clientX - rect.left;
+    oy = e.clientY - rect.top;
+    focusWin(win.id);
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const desk = document.getElementById('desktop');
+    const dr = desk.getBoundingClientRect();
+    let nx = e.clientX - dr.left - ox;
+    let ny = e.clientY - dr.top - oy;
+    nx = Math.max(-win.offsetWidth+80, Math.min(dr.width-80, nx));
+    ny = Math.max(0, Math.min(dr.height-40, ny));
+    win.style.left = nx + 'px';
+    win.style.top = ny + 'px';
+  });
+  document.addEventListener('mouseup', () => { dragging = false; });
+});
+
+/* ── RESIZE ── */
+document.querySelectorAll('.resize-handle').forEach(handle => {
+  let resizing = false, sx, sy, sw, sh;
+  const win = handle.closest('.window');
+  handle.addEventListener('mousedown', e => {
+    resizing = true; sx = e.clientX; sy = e.clientY;
+    sw = win.offsetWidth; sh = win.offsetHeight;
+    e.preventDefault(); e.stopPropagation();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!resizing) return;
+    win.style.width = Math.max(300, sw + e.clientX - sx) + 'px';
+    win.style.height = Math.max(160, sh + e.clientY - sy) + 'px';
+  });
+  document.addEventListener('mouseup', () => { resizing = false; });
+});
+
+/* ── SKILL BARS ── */
+setTimeout(() => {
+  document.querySelectorAll('.skill-bar').forEach(b => b.classList.add('loaded'));
+}, 3200);
+
+/* ── TERMINAL ── */
+const termLines = [
+  { type:'cmd', prompt:'rh@portfolio:~$', text: 'whoami' },
+  { type:'out', text: 'R. Hemalatha — Aspiring Software Developer' },
+  { type:'cmd', prompt:'rh@portfolio:~$', text: 'cat skills.txt' },
+  { type:'out', text: 'Python | Java | JS | SQL | React | HTML/CSS' },
+  { type:'cmd', prompt:'rh@portfolio:~$', text: 'ls projects/' },
+  { type:'out', text: 'sentiment_analysis/  mail_automation/  servicenow_edu/  echosign/' },
+  { type:'cmd', prompt:'rh@portfolio:~$', text: 'echo $STATUS' },
+  { type:'out', text: '▶ READY FOR OPPORTUNITIES' },
+  { type:'cursor', prompt:'rh@portfolio:~$', text: '' },
+];
+const tout = document.getElementById('terminal-out');
+let tIdx = 0;
+function typeTerminal() {
+  if (tIdx >= termLines.length) return;
+  const line = termLines[tIdx++];
+  const div = document.createElement('div');
+  if (line.type === 'cursor') {
+    div.className = 't-cursor-line';
+    div.innerHTML = `<span class="t-prompt">${line.prompt}</span><span class="t-input-cursor"></span>`;
+    tout.appendChild(div);
+    return;
+  }
+  if (line.type === 'cmd') {
+    div.className = 't-line';
+    div.innerHTML = `<span class="t-prompt">${line.prompt}</span><span class="t-cmd"></span>`;
+    tout.appendChild(div);
+    const cmdEl = div.querySelector('.t-cmd');
+    let ci = 0;
+    const iv = setInterval(() => {
+      cmdEl.textContent = line.text.slice(0, ++ci);
+      if (ci >= line.text.length) { clearInterval(iv); setTimeout(typeTerminal, 200); }
+    }, 40);
+  } else {
+    div.className = 't-out';
+    div.textContent = line.text;
+    tout.appendChild(div);
+    setTimeout(typeTerminal, 150);
+  }
+  tout.scrollTop = tout.scrollHeight;
+}
+
+/* ── BOOT SEQUENCE ── */
+const bootMsgs = [
+  'Initializing RH∙OS kernel...',
+  'Loading identity modules...',
+  'Mounting project filesystem...',
+  'Compiling skill database...',
+  'Starting window manager...',
+  'All systems operational ✓',
+];
+const bootEl = document.getElementById('boot-lines');
+let bi = 0;
+function nextBootLine() {
+  if (bi < bootMsgs.length) {
+    bootEl.innerHTML += bootMsgs[bi++] + '<br>';
+    setTimeout(nextBootLine, 320);
+  }
+}
+setTimeout(nextBootLine, 500);
+setTimeout(() => {
+  const boot = document.getElementById('boot');
+  boot.style.transition = 'opacity 0.8s ease';
+  boot.style.opacity = '0';
+  setTimeout(() => {
+    boot.style.display = 'none';
+    document.querySelectorAll('.dock-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('dock-hero').classList.add('active');
+    document.getElementById('dock-projects').classList.add('active');
+    document.getElementById('dock-skills').classList.add('active');
+    document.getElementById('dock-edu').classList.add('active');
+    document.getElementById('dock-ach').classList.add('active');
+    document.getElementById('dock-terminal').classList.add('active');
+    typeTerminal();
+  }, 800);
+}, 3000);
+</script>
+</body>
+</html>
